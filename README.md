@@ -1,14 +1,14 @@
 # GasNFT MintButton
 
 ![badmath](https://img.shields.io/github/languages/top/lernantino/badmath)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/JJordan0C/GasNFT-MintButton?style=flat-square)
-![GitLab](https://img.shields.io/gitlab/license/GasNFT-MintButton)
+[![Bitbucket open issues](https://img.shields.io/github/issues/JJordan0C/GasNFT-MintButton?style=flat)](https://github.com/JJordan0C/GasNFT-MintButton/issues)
+![GitLab](https://img.shields.io/github/license/JJordan0C/GasNFT-MintButton)
 [![](https://dcbadge.vercel.app/api/server/JrUxZ4HufT?style=flat&logo=appveyor)](https://discord.gg/JrUxZ4HufT)
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://gasnft.io">
     <img src="assets/img/logo-gas.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -17,7 +17,7 @@
   <p align="center">
     A simple extension for integrate mint button on your own website!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://gasnft.io"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/JJordan0C/GasNFT-MintButton/issues">Report Bug</a>
