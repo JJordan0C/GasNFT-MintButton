@@ -1,6 +1,5 @@
 class GasNFTMintButton extends HTMLElement {
 
-    
     constructor() {
         super();
         
@@ -15,7 +14,9 @@ class GasNFTMintButton extends HTMLElement {
             mainnet: "0x1",
             goerli: "0x5",
             sepolia: "0xaa36a7"
-        }
+        };
+        let errMint = undefined;
+        let resMint = undefined;
         
         /* HTML Attrs */
         let btn = undefined;
@@ -137,7 +138,7 @@ class GasNFTMintButton extends HTMLElement {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
     
-        return JSON.parse(jsonPayload);
+        return JSON.parse(jsonPayload).abi;
     };
 
     /**
@@ -191,10 +192,34 @@ class GasNFTMintButton extends HTMLElement {
         }
     }
 
-
-    mint () {
+    async mint () {
         if (this.web3 != undefined) {
-            this.contract.methods.mint(1).send({ from: this.account, value: (this.costWei * 1)})
+            if (this.inpMint.value != 0 && this.inpMint.value != "") {
+                try {
+                    await this.contract.methods.mint(parseInt(this.inpMint.value)).call({ from: this.account, value: (this.costWei * 1)})
+                } catch (error) {
+                    error = error.message;
+                    this.errMint = JSON.parse(error.substring(error.indexOf('{'), error.lastIndexOf('}') + 1)).originalError.message;
+                }
+
+                if (this.errMint == undefined) {
+                    await this.contract.methods.mint(parseInt(this.inpMint.value)).send({ from: this.account, value: (this.costWei * 1)})
+                    .on("transactionHash", () => {
+                        this.btn.setAttribute("disabled", "");
+                    }).on("receipt", receipt => {
+                        this.btn.removeAttribute("disabled");
+                    }).on("confirmation", (confirmationNumber, receipt) => {
+                        this.btn.removeAttribute("disabled");
+                        
+                        if (this.resMint == undefined) {
+                            this.resMint = receipt;
+                        }
+                    });
+                }
+                this.dispatchEvent(new CustomEvent('gnft-mint', {
+                    detail: { err: this.errMint, res: this.resMint }
+                }))
+            }
         }else{
             this.connectWeb3();
             this.mint();
@@ -221,7 +246,7 @@ window.addEventListener("load", () => {
     if (!window.hasOwnProperty("Web3")) {
         console.warn("[GasNFT-MintButton] Web3 not detected!")
 
-        let scriptWeb3 = dynamicallyLoadScript("https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js");
+        let scriptWeb3 = dynamicallyLoadScript("https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js");
 
         console.warn("[GasNFT-MintButton] adding it dynamically by cdn...")
         scriptWeb3.onload = () => {
